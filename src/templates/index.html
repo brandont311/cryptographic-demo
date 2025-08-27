@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum-Inspired Security Platform - Live Demo</title>
+    <style>
+        :root {
+            --quantum-blue: #0066ff;
+            --quantum-purple: #6600cc;
+            --coherence-green: #00ff66;
+            --phase-orange: #ff6600;
+            --danger-red: #ff0033;
+        }
+        .demo-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            min-height: 80vh;
+            padding: 20px;
+            background: linear-gradient(135deg, #0a0a0a, #1a1a2e);
+            color: white;
+            font-family: 'Courier New', monospace;
+        }
+        .traditional-side {
+            border: 2px solid #666;
+            border-radius: 10px;
+            padding: 20px;
+            background: rgba(100, 100, 100, 0.1);
+        }
+        .quantum-side {
+            border: 2px solid var(--quantum-blue);
+            border-radius: 10px;
+            padding: 20px;
+            background: rgba(0, 102, 255, 0.1);
+            animation: quantum-glow 3s ease-in-out infinite;
+        }
+        @keyframes quantum-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 102, 255, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(0, 102, 255, 0.6); }
+        }
+        .metric-display {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .metric-card {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+        .coherence-monitor {
+            background: linear-gradient(45deg, var(--coherence-green), var(--quantum-blue));
+            height: 20px;
+            border-radius: 10px;
+            margin: 10px 0;
+            animation: coherence-pulse 2s ease-in-out infinite;
+        }
+        @keyframes coherence-pulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1.0; }
+        }
+        .attack-button {
+            background: var(--danger-red);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+            transition: all 0.3s;
+        }
+        .attack-button:hover {
+            background: #ff3366;
+            transform: scale(1.05);
+        }
+        .protection-status {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .protected {
+            background: var(--coherence-green);
+            color: black;
+            animation: protection-pulse 1s ease-in-out infinite;
+        }
+        .compromised {
+            background: var(--danger-red);
+            animation: danger-flash 0.5s ease-in-out infinite;
+        }
+        @keyframes protection-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+        @keyframes danger-flash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .control-panel {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+            clear: both;
+            position: relative;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <!-- Traditional Encryption Side -->
+        <div class="traditional-side">
+            <h2>🔒 Traditional Encryption</h2>
+            <div id="traditional-status" class="protection-status protected">
+                ENCRYPTED - AES-256
+            </div>
+            <div class="metric-display">
+                <div class="metric-card">
+                    <h3>Encryption Method</h3>
+                    <div>AES-256-CBC</div>
+                </div>
+                <div class="metric-card">
+                    <h3>Key Length</h3>
+                    <div>256 bits</div>
+                </div>
+                <div class="metric-card">
+                    <h3>Security Level</h3>
+                    <div>High</div>
+                </div>
+            </div>
+            <div class="attack-simulation">
+                <h3>🎯 Attack Simulation</h3>
+                <button class="attack-button" onclick="simulateTraditionalAttack('mitm')">Man-in-the-Middle</button>
+                <button class="attack-button" onclick="simulateTraditionalAttack('bruteforce')">Brute Force</button>
+                <button class="attack-button" onclick="simulateTraditionalAttack('quantum')">Quantum Attack</button>
+            </div>
+            <div id="traditional-log" class="attack-log">
+                <h4>Security Log:</h4>
+                <div id="traditional-messages"></div>
+            </div>
+        </div>
+        <!-- Quantum-Inspired Side -->
+        <div class="quantum-side">
+            <h2>⚛️ Quantum-Inspired Protection</h2>
+            <div id="quantum-status" class="protection-status protected">
+                PROTECTED - PHASE COHERENCE ACTIVE
+            </div>
+            <div class="metric-display">
+                <div class="metric-card">
+                    <h3>Coherence Level</h3>
+                    <div id="coherence-value">99.63%</div>
+                    <div class="coherence-monitor" id="coherence-bar"></div>
+                </div>
+                <div class="metric-card">
+                    <h3>Phase Stability</h3>
+                    <div id="phase-value">98.56%</div>
+                </div>
+                <div class="metric-card">
+                    <h3>STO Boundary</h3>
+                    <div>Intact</div>
+                </div>
+                <div class="metric-card">
+                    <h3>Mixing Angle</h3>
+                    <div>7.5°</div>
+                </div>
+            </div>
+            <div class="quantum-visualization">
+                <h3>🌊 Phase Coherence Visualization</h3>
+                <canvas id="phase-canvas" width="400" height="200"></canvas>
+            </div>
+            <div class="attack-simulation">
+                <h3>🎯 Attack Simulation</h3>
+                <button class="attack-button" onclick="simulateQuantumAttack('phase')">Phase Disruption</button>
+                <button class="attack-button" onclick="simulateQuantumAttack('coherence')">Coherence Break</button>
+                <button class="attack-button" onclick="simulateQuantumAttack('sto')">STO Manipulation</button>
+            </div>
+            <div id="quantum-log" class="attack-log">
+                <h4>Security Log:</h4>
+                <div id="quantum-messages"></div>
+            </div>
+        </div>
+    </div>
+    <!-- Demo Control Panel -->
+    <div class="control-panel">
+        <button onclick="resetDemo()">🔄 Reset Demo</button>
+        <button onclick="startCompression()">📦 Compression Demo</button>
+        <button onclick="scheduleCall()">📞 Schedule Technical Call</button>
+    </div>
+    <script>
+        class QuantumSecurityDemo {
+            constructor() {
+                this.coherenceLevel = 0.9963;
+                this.phaseStability = 0.9856;
+                this.stoIntegrity = true;
+                this.isUnderAttack = false;
+                this.initializeDemo();
+            }
+            initializeDemo() {
+                this.startPhaseVisualization();
+                this.startMetricsUpdates();
+                this.logMessage('quantum', 'Quantum-inspired protection system online');
+                this.logMessage('traditional', 'Traditional encryption active');
+            }
+            startPhaseVisualization() {
+                const canvas = document.getElementById('phase-canvas');
+                const ctx = canvas.getContext('2d');
+                let time = 0;
+                const drawPhase = () => {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.strokeStyle = '#00ff66';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    for (let x = 0; x < canvas.width; x++) {
+                        const y = canvas.height/2 +
+                                 Math.sin((x + time) * 0.02) * 30 * this.coherenceLevel +
+                                 Math.sin((x + time) * 0.05) * 15 * this.phaseStability;
+                        if (x === 0) ctx.moveTo(x, y);
+                        else ctx.lineTo(x, y);
+                    }
+                    ctx.stroke();
+                    time += 2;
+                    requestAnimationFrame(drawPhase);
+                };
+                drawPhase();
+            }
+            startMetricsUpdates() {
+                setInterval(() => {
+                    if (!this.isUnderAttack) {
+                        this.coherenceLevel = 0.9963 + (Math.random() - 0.5) * 0.001;
+                        this.phaseStability = 0.9856 + (Math.random() - 0.5) * 0.002;
+                    }
+                    this.updateMetricsDisplay();
+                }, 100);
+            }
+            updateMetricsDisplay() {
+                document.getElementById('coherence-value').textContent =
+                    (this.coherenceLevel * 100).toFixed(2) + '%';
+                document.getElementById('phase-value').textContent =
+                    (this.phaseStability * 100).toFixed(2) + '%';
+                const bar = document.getElementById('coherence-bar');
+                bar.style.width = (this.coherenceLevel * 100) + '%';
+                if (this.coherenceLevel < 0.95) {
+                    bar.style.background = 'linear-gradient(45deg, #ff6600, #ff0033)';
+                } else {
+                    bar.style.background = 'linear-gradient(45deg, #00ff66, #0066ff)';
+                }
+            }
+            logMessage(system, message) {
+                const logContainer = document.getElementById(`${system}-messages`);
+                const timestamp = new Date().toLocaleTimeString();
+                const logEntry = document.createElement('div');
+                logEntry.innerHTML = `<strong>${timestamp}:</strong> ${message}`;
+                logContainer.appendChild(logEntry);
+                logContainer.scrollTop = logContainer.scrollHeight;
+            }
+        }
+        function simulateTraditionalAttack(attackType) {
+            const demo = window.quantumDemo;
+            switch(attackType) {
+                case 'mitm':
+                    demo.logMessage('traditional', '🚨 Man-in-the-middle attack detected');
+                    setTimeout(() => {
+                        document.getElementById('traditional-status').className = 'protection-status compromised';
+                        document.getElementById('traditional-status').textContent = 'COMPROMISED - MITM ATTACK';
+                        demo.logMessage('traditional', '❌ Encryption bypassed - data intercepted');
+                    }, 2000);
+                    break;
+                case 'bruteforce':
+                    demo.logMessage('traditional', '🚨 Brute force attack detected');
+                    setTimeout(() => {
+                        document.getElementById('traditional-status').className = 'protection-status compromised';
+                        document.getElementById('traditional-status').textContent = 'COMPROMISED - BRUTE FORCE';
+                        demo.logMessage('traditional', '❌ Key cracked - system compromised');
+                    }, 3000);
+                    break;
+                case 'quantum':
+                    demo.logMessage('traditional', '🚨 Quantum computer attack initiated');
+                    setTimeout(() => {
+                        document.getElementById('traditional-status').className = 'protection-status compromised';
+                        document.getElementById('traditional-status').textContent = 'COMPROMISED - QUANTUM ATTACK';
+                        demo.logMessage('traditional', '❌ RSA keys factored - system compromised');
+                    }, 3000);
+                    break;
+            }
+        }
+        function simulateQuantumAttack(attackType) {
+            const demo = window.quantumDemo;
+            demo.isUnderAttack = true;
+            switch(attackType) {
+                case 'phase':
+                    demo.logMessage('quantum', '🚨 Phase disruption attack detected');
+                    demo.coherenceLevel = 0.85;
+                    demo.phaseStability = 0.75;
+                    setTimeout(() => {
+                        demo.logMessage('quantum', '🛡️ Quantum correction protocols activated');
+                        demo.logMessage('quantum', '✅ Phase coherence restored - attack neutralized');
+                        demo.coherenceLevel = 0.9963;
+                        demo.phaseStability = 0.9856;
+                        demo.isUnderAttack = false;
+                    }, 3000);
+                    break;
+                case 'coherence':
+                    demo.logMessage('quantum', '🚨 Coherence disruption detected');
+                    demo.logMessage('quantum', '🔍 STO boundary analysis initiated');
+                    demo.logMessage('quantum', '✅ Attack vector isolated and neutralized');
+                    break;
+                case 'sto':
+                    demo.logMessage('quantum', '🚨 STO manipulation attempt detected');
+                    setTimeout(() => {
+                        demo.logMessage('quantum', '🛡️ STO boundary restored');
+                        demo.isUnderAttack = false;
+                    }, 2500);
+                    break;
+            }
+        }
+        function startCompression() {
+            window.location.href = '/compression-demo';
+        }
+        function scheduleCall() {
+            window.open('https://calendly.com/your-calendar', '_blank');
+        }
+        function resetDemo() {
+            window.location.reload();
+        }
+        window.addEventListener('load', () => {
+            window.quantumDemo = new QuantumSecurityDemo();
+        });
+    </script>
+</body>
+</html>

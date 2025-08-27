@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  quantum-demo:
+    build: .
+    ports:
+      - "80:80"
+      - "8080:8080"
+    environment:
+      - DEMO_MODE=true
+      - LICENSE_SERVER=https://your-license-server.com
+    volumes:
+      - ./logs:/app/logs
+    restart: unless-stopped
+    
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+    
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "443:443"
+    volumes:
+      - ./nginx-ssl.conf:/etc/nginx/nginx.conf
+      - ./ssl:/etc/nginx/ssl
+    depends_on:
+      - quantum-demo
+    restart: unless-stopped
