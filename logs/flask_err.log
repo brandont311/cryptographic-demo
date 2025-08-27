@@ -33,3 +33,11 @@
 [33mPress CTRL+C to quit[0m
 127.0.0.1 - - [25/Aug/2025 15:13:53] "GET / HTTP/1.0" 200 -
 127.0.0.1 - - [25/Aug/2025 15:13:54] "[33mGET /favicon.ico HTTP/1.0[0m" 404 -
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://172.18.0.3:8080
+[33mPress CTRL+C to quit[0m
+127.0.0.1 - - [27/Aug/2025 14:32:40] "GET / HTTP/1.0" 200 -
+127.0.0.1 - - [27/Aug/2025 14:32:40] "[33mGET /favicon.ico HTTP/1.0[0m" 404 -
+127.0.0.1 - - [27/Aug/2025 14:48:51] "GET / HTTP/1.0" 200 -
