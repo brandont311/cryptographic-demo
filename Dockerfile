@@ -23,6 +23,9 @@ COPY src/ /app/
 COPY nginx.conf /etc/nginx/
 COPY supervisord.conf /etc/supervisor/conf.d/
 
+# Create logs directory for Supervisor
+RUN mkdir -p /app/logs
+
 # Copy AXIOMARC engine (your proprietary binary)
 COPY axiomarc-engine /usr/local/bin/
 RUN chmod +x /usr/local/bin/axiomarc-engine
