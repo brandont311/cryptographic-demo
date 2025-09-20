@@ -1,0 +1,10 @@
+﻿version: "3.9"
+services:
+  backend:
+    image: qsp_crypto_dashboard-backend:latest
+    ports:
+      - "8081:8080"   # app UI (changed from 8080 to avoid conflicts)
+  attacker:
+    image: qsp_crypto_dashboard-attacker:latest
+    ports:
+      - "5102:5101"   # (optional) sidecar UI & logs (changed from 5101 to avoid conflicts)
